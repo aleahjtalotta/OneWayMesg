@@ -13,7 +13,7 @@ import java.net.*;
  * It receives the connection from client
  * and prints messages sent from the client
  */
-public class OneWayMesgServer {
+public class TwoWayMesgServer {
 	/*
 	 * The server program starts from here
 	 */

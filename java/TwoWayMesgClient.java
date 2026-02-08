@@ -13,7 +13,7 @@ import java.net.*;
  * It connects to the server at the given address
  * and sends messages typed by the user to the server
  */
-public class OneWayMesgClient {
+public class TwoWayMesgClient {
 	/*
 	 * The client program starts from here
 	 */
@@ -57,7 +57,7 @@ public class OneWayMesgClient {
 				} catch (IOException e) {}                          // ADDED
 			});                                                     // ADDED
 			receiver.start();  
-			                                    
+
 			// Keep doing till we get EOF from user
 			while (true) {
 				// Read a line from the keyboard
