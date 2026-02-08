@@ -49,21 +49,39 @@ public class OneWayMesgServer {
 			BufferedReader fromClientReader = new BufferedReader(
 					new InputStreamReader(clientSock.getInputStream()));
 
-			// Keep serving the client
-			while (true) {
-				// Read a message from the client
-				String message = fromClientReader.readLine();
+			/* ===== ADDED: writer to send messages TO client ===== */
+			PrintWriter toClientWriter = new PrintWriter(                 // ADDED
+					clientSock.getOutputStream(), true);                  // ADDED
 
-				// If we get null, it means client sent EOF
-				if (message == null) {
-					System.out.println("Client closed connection");
-					clientSock.close();
-					break;
-				}
+			/* ===== ADDED: reader for server user's keyboard input ===== */
+			BufferedReader fromUserReader = new BufferedReader(           // ADDED
+					new InputStreamReader(System.in));                    // ADDED
 
-				// Display the message
-				System.out.println("Client: " + message);
-			}
+			Thread receiver = new Thread(() -> {                          // ADDED
+				try {                                                    // ADDED
+					while (true) {                                       // ADDED
+						String message = fromClientReader.readLine();    // ADDED
+						if (message == null) {                           // ADDED
+							System.out.println("Client closed connection"); // ADDED
+							clientSock.close();                           // ADDED
+							break;                                        // ADDED
+						}                                                // ADDED
+						System.out.println("Client: " + message);        // ADDED
+					}                                                    // ADDED
+				} catch (Exception e) {}                                  // ADDED
+			});                                                          // ADDED
+			receiver.start(); //added
+        
+			while (true) {                                                // ADDED
+				String line = fromUserReader.readLine();                 // ADDED
+				if (line == null) {                                      // ADDED
+					System.out.println("Closing connection");            // ADDED
+					clientSock.close();                                  // ADDED
+					break;                                               // ADDED
+				}                                                       // ADDED
+				toClientWriter.println("Server: " + line);               // ADDED
+			}                                                            // ADDED
+			
 		}
 		catch(Exception e) {
 			// Print the exception message

@@ -44,6 +44,20 @@ public class OneWayMesgClient {
 			BufferedReader fromUserReader = new BufferedReader(
 					new InputStreamReader(System.in));
 
+			BufferedReader fromServerReader = new BufferedReader(   // ADDED
+					new InputStreamReader(sock.getInputStream())); // ADDED
+				
+					Thread receiver = new Thread(() -> {                   // ADDED
+				try {                                               // ADDED
+					while (true) {                                  // ADDED
+						String msg = fromServerReader.readLine();  // ADDED
+						if (msg == null) break;                    // ADDED
+						System.out.println(msg);                   // ADDED
+					}                                               // ADDED
+				} catch (IOException e) {}                          // ADDED
+			});                                                     // ADDED
+			receiver.start();  
+			                                    
 			// Keep doing till we get EOF from user
 			while (true) {
 				// Read a line from the keyboard
