@@ -20,14 +20,16 @@ public class TwoWayMesgClient {
 	public static void main(String args[])
 	{
 		// Client needs server's contact information
-		if (args.length != 2) {
-			System.out.println("usage: java OneWayMesgClient <server name> <server port>");
+		if (args.length != 3) {
+		System.out.println("usage: java TwoWayMesgClient <server name> <server port> <clientName>"); // CHANGED
 			System.exit(1);
 		}
 
 		// Get server's whereabouts
 		String serverName = args[0];
 		int serverPort = Integer.parseInt(args[1]);
+		String clientName = args[2]; 
+
 
 		// Be prepared to catch socket related exceptions
 		try {
@@ -70,7 +72,8 @@ public class TwoWayMesgClient {
 				}
 
 				// Send the line to the server
-				toServerWriter.println(line);
+				toServerWriter.println(clientName + ": " + line); // CHANGED
+
 			}
 
 			// close the socket and exit

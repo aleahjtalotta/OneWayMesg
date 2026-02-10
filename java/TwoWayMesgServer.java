@@ -19,13 +19,14 @@ public class TwoWayMesgServer {
 	 */
 	public static void main(String args[]) {
 		// Server needs the port number to listen on
-		if (args.length != 1) {
-			System.out.println("usage: java OneWayMesgServer <port>");
+		if (args.length != 2) { //CHANGED
+			System.out.println("usage: java TwoWayMesgServer <port> <serverName>");
 			System.exit(1);
 		}
 
 		// Get the port on which server should listen */
 		int serverPort = Integer.parseInt(args[0]);
+		String serverName = args[1]; // ADDED
 
 		// Be prepared to catch socket related exceptions
 		try {
@@ -49,11 +50,9 @@ public class TwoWayMesgServer {
 			BufferedReader fromClientReader = new BufferedReader(
 					new InputStreamReader(clientSock.getInputStream()));
 
-			/* ===== ADDED: writer to send messages TO client ===== */
 			PrintWriter toClientWriter = new PrintWriter(                 // ADDED
 					clientSock.getOutputStream(), true);                  // ADDED
 
-			/* ===== ADDED: reader for server user's keyboard input ===== */
 			BufferedReader fromUserReader = new BufferedReader(           // ADDED
 					new InputStreamReader(System.in));                    // ADDED
 
@@ -66,7 +65,7 @@ public class TwoWayMesgServer {
 							clientSock.close();                           // ADDED
 							break;                                        // ADDED
 						}                                                // ADDED
-						System.out.println("Client: " + message);        // ADDED
+						System.out.println(message);        // ADDED
 					}                                                    // ADDED
 				} catch (Exception e) {}                                  // ADDED
 			});                                                          // ADDED
@@ -79,7 +78,7 @@ public class TwoWayMesgServer {
 					clientSock.close();                                  // ADDED
 					break;                                               // ADDED
 				}                                                       // ADDED
-				toClientWriter.println("Server: " + line);               // ADDED
+				toClientWriter.println(serverName + ": " + line);               // ADDED
 			}                                                            // ADDED
 			
 		}
